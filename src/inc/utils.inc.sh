@@ -1,4 +1,5 @@
 #!/bin/bash
+# https://github.com/cihantuncer/InitSite
 
 date=`date +%R\ %d-%m-%Y`     # datestamp
 date2=`date '+%d-%m-%Y_%H-%M-%S'` # datestamp

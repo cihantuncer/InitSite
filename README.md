@@ -38,13 +38,15 @@
 ## Prerequisites
 Before using **InitSite**, ensure that the following dependencies are installed:
 
-- Apache. *(Mandatory)*
-- PHP. *(Mandatory)*
-- PHP-FPM for multi-php version usage. *(Optional)*
-- DNS service (e.g., DNSMasq) for local domain redirections. *(Optional)*
-- Mkcert for certificate generation. *(Optional)*
+- [Apache](https://httpd.apache.org/) *(Mandatory)* 
+- [PHP](https://www.php.net/)  *(Mandatory)*
+- [PHP-FPM](https://php-fpm.org/) for multi-php version usage. *(Optional)*
+- DNS service (e.g., [DNSMasq](https://thekelleys.org.uk/dnsmasq/doc.html)) for local domain redirections. *(Optional)*
+- [Mkcert](https://github.com/FiloSottile/mkcert) for certificate generation. *(Optional)*
 
-<br><br>
+See [Notes](https://github.com/cihantuncer/InitSite?tab=readme-ov-file#notes) for more information about dependencies.
+
+<br>
 
 ## Installation
 
@@ -83,7 +85,7 @@ src="https://api.github.com/repos/cihantuncer/initsite/releases/latest";dURL=$(c
 | dns lan remove      | domain.name               | Removes <domain.name> from lan records.               |
 | cert                | <empty>                   | Shows all generated certificates for enabled sites.   |
 | cert renew          | domain.name               | Renews certificate for <domain.name>                  |
-| cert create         | domain.name               | Genereates certificate for <domain.name>              |
+| cert create         | domain.name               | Generates certificate for <domain.name>               |
 | cert delete         | domain.name               | Deletes certificate for <domain.name>                 |
 | php ver             | domain.name               | Shows current php version for <domain.name>           |
 | php ver             | domain.name phpvers       | Changes php version of <domain.name> to provided ver. |
@@ -109,5 +111,34 @@ Detailed information about the predefined settings is available in the settings.
 
 <br>
 
+## Notes
+
+### About Local Domain Extensions
+You can use any domain extensions for local dns entries, but most TLD extensions (such as .com, .net) may be refused by your browser, os or router for security reasons ([See](https://bugdrivendevelopment.net/browser-ignore-internal-dns)).
+
+Also do not use ".local" extension, it's reserved for mDNS on most systems ([See](https://community.veeam.com/blogs-and-podcasts-57/why-using-local-as-your-domain-name-extension-is-a-bad-idea-4828)).
+
+It's better to use extensions that aren't reserved by authorities. **Fictitious domain extensions are the best.**
+
+
+### About Dependencies
+- Only Apache and PHP are required. The other components are optional, but if you don't install them, you won't be able to use the related features. However, it's recommended to install them.
+
+- For PHP-FPM, [this guide](https://think.unblog.ch/en/multiple-php-fpm-versions-with-apache-on-debian-12/) is quite helpful (following up to Step 4 is enough). The steps are similar for most distros and PHP versions.
+
+- Mkcert can likely be installed easily from your distro's repositories. You can find detailed installation and setup instructions on the [Mkcert GitHub page](https://github.com/FiloSottile/mkcert). Here's a quick summary:
+    - Install `mkcert`.
+    - Run `sudo mkcert -install` to generate the rootCA.pem and key files as root (since InitSite creates certificates as root).
+    - Use `sudo mkcert -CAROOT` to find the rootCA.pem folder. It's usually located in `/root/.local/share/mkcert`.
+    - Import the "rootCA.pem" file on all the devices you use in your local development environment. See [this guide](https://www.bounca.org/tutorials/install_root_certificate.html) for more details.
+
+- I use DNSmasq as the DNS server in my local network, but you can use any DNS server you prefer. The basic steps are:
+    - Install a DNS server on a device in your local network (e.g., your router, Raspberry Pi, or PC—this could even be your web server). The DNS server should be accessible via SSH.
+    - Set the local DNS server's IP address as the primary DNS for the devices in your development environment. The easiest way to do this is by changing the DNS settings on your local network router. This way, you won't have to change DNS settings on each device individually.
+    - Adjust the DNS settings in the `initsite/settings.conf` file according to your network configuration.
+    
+
+<br>
+
 ## TODO
-New features coming soon...
+New features are coming soon...
