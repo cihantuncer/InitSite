@@ -105,7 +105,9 @@ Detailed information about the predefined settings is available in the settings.
 
 ### See [settings.conf](https://github.com/cihantuncer/InitSite/wiki/Setting.conf) on Wiki
 
-### For detailed usage information, see [Usage Examples](https://github.com/cihantuncer/InitSite/wiki/Usage-Examples) on Wiki
+#### For detailed usage information, see [Usage Examples](https://github.com/cihantuncer/InitSite/wiki/Usage-Examples) on Wiki
+
+<br>
 
 ## TODO
 New features coming soon...
