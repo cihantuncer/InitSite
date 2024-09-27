@@ -6,8 +6,8 @@
 
 ## Features
 - Automated web site deployment/undeployment with ssl, multi-php version, local dns redirection support.
-- Add/remove aliases to domain.
-- Add/remove DNS records for internal dns entries (your local web server) and for your local DNS server.
+- Easily add or remove domain aliases.
+- Manage DNS records for internal DNS and local DNS servers.
 - Generate/renew/delete certificates for domain.
 - Get all infos about:
     - Enabled sites on the server.
@@ -22,11 +22,11 @@
 ```
 > initsite deploy mysite.home --alias "mysite.loc my.internal" --phpversion "8.3"
 ```
-1) Creates vhost file for "mysite.home" with "mysite.loc my.internal" aliases.
-2) Generates ssl certificate and key for domain and aliases (with wildcards) and defines in the vhost file. *(Optional)*
-3) Creates PHP-FPM sock handler in the vhost file for using specified php version. *(Optional)*
-4) Adds mysite.home, mysite.loc, my.internal, www.mysite.home, www.mysite.loc, www.my.internal redirections to the internal hosts entries.
-5) Adds mysite.home, mysite.loc, my.internal, www.mysite.home, www.mysite.loc, www.my.internal redirections to the local dns server entries. *(Optional)*
+1) Creates the vhost for "mysite.home" with "mysite.loc" and "my.internal" aliases.
+2) Generates and configures SSL certificates *(Optional)*.
+3) Sets the PHP version to 8.3 *(Optional)*.
+4) Updates DNS and internal host records.
+5) Activates the site and tests HTTP/HTTPS requests *(Optional)*.
 6) Enables mysite.home website and tests http, https requests on the server.
 
 <br>
@@ -38,11 +38,14 @@
 ## Prerequisites
 Before using **InitSite**, ensure that the following dependencies are installed:
 
-- [Apache](https://httpd.apache.org/) *(Mandatory)* 
-- [PHP](https://www.php.net/)  *(Mandatory)*
-- [PHP-FPM](https://php-fpm.org/) for multi-php version usage. *(Optional)*
-- DNS service (e.g., [DNSMasq](https://thekelleys.org.uk/dnsmasq/doc.html)) for local domain redirections. *(Optional)*
-- [Mkcert](https://github.com/FiloSottile/mkcert) for certificate generation. *(Optional)*
+- [Apache](https://httpd.apache.org/) *(1)* 
+- [PHP](https://www.php.net/) *(1)*
+- [PHP-FPM](https://php-fpm.org/) for multi-php version usage. *(2)*
+- DNS service (e.g., [DNSMasq](https://thekelleys.org.uk/dnsmasq/doc.html)) for local domain redirections. *(2)*
+- [Mkcert](https://github.com/FiloSottile/mkcert) for certificate generation. *(2)*
+
+*(1):Required for basic functionality*
+*(2):Optional but recommended for full feature set*
 
 See [Notes](https://github.com/cihantuncer/InitSite?tab=readme-ov-file#notes) for more information about dependencies.
 
@@ -50,11 +53,12 @@ See [Notes](https://github.com/cihantuncer/InitSite?tab=readme-ov-file#notes) fo
 
 ## Installation
 
-### Auto (`Curl` required.)
+### Auto
 Copy & paste code below to your terminal, hit enter.
 
 ```
-src="https://api.github.com/repos/cihantuncer/initsite/releases/latest";dURL=$(curl --silent $src | grep '"browser_download_url":' | sed -E 's/.*"([^"]+)".*/\1/'); fName=$(basename "$dURL"); curl --silent -k -L -o "$fName" "$dURL" && [ -f "$fName" ] && tar -xf "$fName" && sudo bash "./initsite/initsite.sh" setup || echo -e "\nInitSite script could not be downloaded.\n"
+src="https://api.github.com/repos/cihantuncer/initsite/releases/latest"; command -v curl &>/dev/null || { echo -e "\nError: 'curl' is not installed. Please install it and try again.\n"; exit 1; }; command -v tar &>/dev/null || { echo -e "\nError: 'tar' is not installed. Please install it and try again.\n"; exit 1; }; dURL=$(curl --silent $src | grep '"browser_download_url":' | sed -E 's/.*"([^"]+)".*/\1/'); fName=$(basename "$dURL"); curl --silent -k -L -o "$fName" "$dURL" && [ -f "$fName" ] && tar -xf "$fName" && sudo bash "./initsite/initsite.sh" setup || echo -e "\nInitSite script could not be downloaded.\n"
+
 ```
 
 ### Manual
@@ -120,11 +124,10 @@ Also do not use ".local" extension, it's reserved for mDNS on most systems ([See
 
 It's better to use extensions that aren't reserved by authorities. **Fictitious domain extensions are the best.**
 
-
 ### About Dependencies
 - Only Apache and PHP are required. The other components are optional, but if you don't install them, you won't be able to use the related features. However, it's recommended to install them.
 
-- For PHP-FPM, [this guide](https://think.unblog.ch/en/multiple-php-fpm-versions-with-apache-on-debian-12/) is quite helpful (following up to Step 4 is enough). The steps are similar for most distros and PHP versions.
+- PHP-FPM is only necessary if you're managing multiple PHP version., [This guide](https://shape.host/resources/how-to-install-multiple-versions-of-php-on-debian-with-ispconfig) is quite helpful (following up to Step 4 is enough). The steps are similar for most distros and PHP versions.
 
 - Mkcert can likely be installed easily from your distro's repositories. You can find detailed installation and setup instructions on the [Mkcert GitHub page](https://github.com/FiloSottile/mkcert). Here's a quick summary:
     - Install `mkcert`.
@@ -136,7 +139,7 @@ It's better to use extensions that aren't reserved by authorities. **Fictitious 
     - Install a DNS server on a device in your local network (e.g., your router, Raspberry Pi, or PC—this could even be your web server). The DNS server should be accessible via SSH.
     - Set the local DNS server's IP address as the primary DNS for the devices in your development environment. The easiest way to do this is by changing the DNS settings on your local network router. This way, you won't have to change DNS settings on each device individually.
     - Adjust the DNS settings in the `initsite/settings.conf` file according to your network configuration.
-    
+    - For DNSmasq, [this guide](https://community.zextras.com/how-to-install-your-dns-server-using-dnsmasq/) will be helpful.
 
 <br>
 
