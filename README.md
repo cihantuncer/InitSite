@@ -109,6 +109,6 @@ Detailed information about the predefined settings is available in the settings.
 
 -----
 
-### For detailed usage examples, see [Usage Examples](https://github.com/cihantuncer/InitSite/wiki/Usage-Examples) on Wiki
+### For detailed usage information, see [Usage Examples](https://github.com/cihantuncer/InitSite/wiki/Usage-Examples) on Wiki
 
 <br>
