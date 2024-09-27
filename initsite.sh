@@ -259,7 +259,7 @@ function checkDependencies {
 
 # --- Set script parameters --------------------------------------
 
-noargs="-s -log -h -help --help"
+noargs="-s --silent -log --log -h --help"
 noargs=($noargs)
 params=("$@")
 opt_flags=()
