@@ -100,7 +100,7 @@ src="https://api.github.com/repos/cihantuncer/initsite/releases/latest";dURL=$(c
 | -h, --help         | <empty>                   | Get help for selected command.              |
 
 ## Settings.conf
-### See [settings.conf](https://github.com/cihantuncer/InitSite/wiki/Settings) details on Wiki
+### See [settings.conf](https://github.com/cihantuncer/InitSite/wiki/Setting.conf) details on Wiki
 
 <br>
 
