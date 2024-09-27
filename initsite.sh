@@ -1,4 +1,7 @@
 #!/bin/bash
+# https://github.com/cihantuncer/InitSite
+# (c) 2024, Cihan Tuncer - cihan@cihantuncer.com
+# This script is licensed under MIT license (see LICENSE.md for details)
 
 # Default variables
 
