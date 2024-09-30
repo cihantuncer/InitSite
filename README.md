@@ -20,7 +20,7 @@
 ## An Example
 
 ```
-> initsite deploy mysite.home --alias "mysite.loc my.internal" --phpversion "8.3"
+initsite deploy mysite.home --alias "mysite.loc my.internal" --phpversion "8.3"
 ```
 1) Creates the vhost for "mysite.home" with "mysite.loc" and "my.internal" aliases.
 2) Generates and configures SSL certificates *(Optional)*.
